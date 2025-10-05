@@ -1,3 +1,4 @@
+# Gitバージョン管理のテスト
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 import datetime as dt
