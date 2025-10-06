@@ -1,4 +1,3 @@
-# Gitバージョン管理のテスト
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 import datetime as dt
@@ -46,7 +45,7 @@ def press_start_button():
     label.config(text="""[休憩]=タイマーを一時停止します\n
     [終了]=終了し学習内容を記録します""")
     time_counter()
-    subject_label.forget()
+    # subject_label.forget()
 
 def press_break_button():
     """休憩ボタン処理"""
@@ -83,6 +82,14 @@ def save_to_excel():
     if not content.strip(): # 前後の空白や改行を削除
         return  # 空文字だったら何もせず終了
     
+    if start_time is not None and not is_paused:
+        study_time += dt.datetime.now() - start_time
+        is_paused = True
+
+    content = input_text.get("1.0", "end-1c").strip()
+    if not content:
+        return
+    
     # Excelを開く or 新規作成
     if os.path.exists(filename):
         wb = xl.load_workbook(filename)
@@ -117,11 +124,12 @@ def save_to_excel():
     subject_frame.pack(expand=True)
     label.config(text="学習科目を選択してください")
 
+    reset_timer()  # タイマーをリセット
+
 def press_end_button():
     global record_start_time
     record_start_time = start_time  # reset前に開始時刻を保存
     record()  # 入力ウィンドウを開く
-    reset_timer()  # タイマーをリセット
 
 def record():
     global input_win, input_text
